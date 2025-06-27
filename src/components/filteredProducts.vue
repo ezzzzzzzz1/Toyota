@@ -66,7 +66,7 @@ export default {
         filteredProducts.value = products.value;
       } catch (err) {
         error.value = err.message;
-      } finally {
+l      } finally {
         loading.value = false;
       }
     };
