@@ -56,32 +56,38 @@ export default {
     const loading = ref(true);
     const error = ref(null);
 
-    const fetchProducts = async () => {
-      try {
-        loading.value = true;
-        const response = await fetch("/api/v1/products/getJson");
-        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-        const result = await response.json();
-        products.value = result.data || [];
-        filteredProducts.value = products.value;
-      } catch (err) {
-        error.value = err.message;
-l      } finally {
-        loading.value = false;
-      }
-    };
+  const apiBaseUrl =
+  import.meta.env.MODE === "production"
+    ? "https://api-forklift.code95.info"
+    : "/api"; // Local development uses the proxy
 
-    const fetchFilters = async () => {
-      try {
-        const response = await fetch("/api/v1/products/filters");
-        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-        const result = await response.json();
-        selectFilters.value = result.data["Select-Type"] || [];
-        numericFilter.value = result.data["Numeric-Type"][0] || {};
-      } catch (err) {
-        error.value = err.message;
-      }
-    };
+const fetchProducts = async () => {
+  try {
+    loading.value = true;
+    const response = await fetch(`${apiBaseUrl}/v1/products/getJson`);
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    const result = await response.json();
+    products.value = result.data || [];
+    filteredProducts.value = products.value;
+  } catch (err) {
+    error.value = err.message;
+  } finally {
+    loading.value = false;
+  }
+};
+
+const fetchFilters = async () => {
+  try {
+    const response = await fetch(`${apiBaseUrl}/v1/products/filters`);
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    const result = await response.json();
+    selectFilters.value = result.data["Select-Type"] || [];
+    numericFilter.value = result.data["Numeric-Type"][0] || {};
+  } catch (err) {
+    error.value = err.message;
+  }
+};
+
 
     const applyFilters = () => {
       filteredProducts.value = products.value.filter((product) => {
