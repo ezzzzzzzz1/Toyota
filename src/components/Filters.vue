@@ -7,38 +7,18 @@
       class="col-12 col-md-4"
     >
       <div class="card p-3 shadow">
-        <h5 class="card-title">{{ filter.name }}</h5>
-        <div class="d-flex flex-wrap mt-3">
-          <div class="form-check form-check-inline">
-            <input
-              class="form-check-input"
-              type="radio"
-              :name="filter.slug"
-              :id="`filter-${filter.slug}-clear`"
-              :value="null"
-              v-model="selectedFilters[filter.slug]"
-            />
-            <label class="form-check-label text-danger" :for="`filter-${filter.slug}-clear`">
-              Clear
-            </label>
-          </div>
-          <div
+        <h5 class="card-title text-center">{{ filter.name }}</h5>
+        <div class="d-flex justify-content-around mt-3 flex-wrap">
+          <!-- Filter Options -->
+          <button
             v-for="value in filter.values"
             :key="value.fields.id"
-            class="form-check form-check-inline"
+            class="btn btn-filter"
+            :class="{ 'btn-selected': selectedFilters[filter.slug] === value.fields.value }"
+            @click="selectedFilters[filter.slug] = value.fields.value"
           >
-            <input
-              class="form-check-input"
-              type="radio"
-              :name="filter.slug"
-              :id="`filter-${filter.slug}-${value.fields.id}`"
-              :value="value.fields.value"
-              v-model="selectedFilters[filter.slug]"
-            />
-            <label class="form-check-label" :for="`filter-${filter.slug}-${value.fields.id}`">
-              {{ value.fields.name }}
-            </label>
-          </div>
+            {{ value.fields.name }}
+          </button>
         </div>
       </div>
     </div>
@@ -46,7 +26,7 @@
     <!-- Numeric Filter (Load Capacity) -->
     <div class="col-12 col-md-4">
       <div class="card p-3 shadow">
-        <h5 class="card-title">Load Capacity</h5>
+        <h5 class="card-title text-center">Load Capacity</h5>
         <input
           type="range"
           class="form-range mt-3"
@@ -93,3 +73,35 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+/* Button Styling */
+.btn-filter {
+  padding: 0.5rem 1rem; /* Adjust padding for size consistency */
+  margin: 0.5rem; /* Add spacing between buttons */
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background-color: #f8f9fa;
+  color: #000;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.btn-filter:hover {
+  background-color: #ed1c24; /* Toyota red */
+  color: #fff;
+}
+
+.btn-selected {
+  background-color: #ed1c24; /* Toyota red */
+  color: #fff;
+  font-weight: bold;
+}
+
+/* Flex-wrap ensures proper spacing and layout */
+.flex-wrap > .btn-filter {
+  flex: 1 1 auto; /* Let buttons adjust size dynamically */
+  max-width: 45%; /* Ensure buttons are smaller than half the card */
+  text-align: center;
+}
+</style>
