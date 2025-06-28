@@ -93,15 +93,14 @@ export default {
 }
 
 .btn-selected {
-  background-color: #ed1c24; /* Toyota red */
+  background-color: #ed1c24; 
   color: #fff;
   font-weight: bold;
 }
 
-/* Flex-wrap ensures proper spacing and layout */
 .flex-wrap > .btn-filter {
-  flex: 1 1 auto; /* Let buttons adjust size dynamically */
-  max-width: 45%; /* Ensure buttons are smaller than half the card */
+  flex: 1 1 auto; 
+  max-width: 45%; 
   text-align: center;
 }
 </style>
