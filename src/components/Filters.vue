@@ -20,6 +20,20 @@
             {{ value.fields.name }}
           </button>
         </div>
+
+        <!-- Display Selected Filters -->
+        <div v-if="selectedFilters[filter.slug]" class="mt-3">
+          <div
+            class="selected-filter d-flex align-items-center justify-content-between px-3 py-2 rounded bg-danger text-white"
+          >
+            <span>{{ selectedFilterName(filter.slug) }}</span>
+            <button
+              class="btn-close btn-close-white"
+              aria-label="Remove"
+              @click="removeFilter(filter.slug)"
+            ></button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -38,8 +52,19 @@
           <span>{{ numericFilter.from }} kg</span>
           <span>{{ numericFilter.to }} kg</span>
         </div>
-        <div class="text-center mt-2">
-          Selected Capacity: {{ selectedFilters['load-capacity'] || numericFilter.from }} kg
+        <div v-if="selectedFilters['load-capacity']" class="mt-3">
+          <div
+            class="selected-filter d-flex align-items-center justify-content-between px-3 py-2 rounded bg-danger text-white"
+          >
+            <span>
+              Selected Capacity: {{ selectedFilters['load-capacity'] || numericFilter.from }} kg
+            </span>
+            <button
+              class="btn-close btn-close-white"
+              aria-label="Remove"
+              @click="selectedFilters['load-capacity'] = null"
+            ></button>
+          </div>
         </div>
         <button
           class="btn btn-outline-danger btn-sm w-100 mt-2"
@@ -71,14 +96,29 @@ export default {
       return this.selectFilters.filter((filter) => filter.name !== "Power Type");
     },
   },
+  methods: {
+    selectedFilterName(slug) {
+      const filter = this.filteredSelectFilters.find(
+        (f) => f.slug === slug
+      );
+      const selectedValue = this.selectedFilters[slug];
+      const value = filter?.values.find(
+        (v) => v.fields.value === selectedValue
+      );
+      return value?.fields.name || "";
+    },
+    removeFilter(slug) {
+      this.selectedFilters[slug] = null;
+    },
+  },
 };
 </script>
 
 <style scoped>
 /* Button Styling */
 .btn-filter {
-  padding: 0.5rem 1rem; /* Adjust padding for size consistency */
-  margin: 0.5rem; /* Add spacing between buttons */
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
   border: 1px solid #ddd;
   border-radius: 20px;
   background-color: #f8f9fa;
@@ -88,19 +128,24 @@ export default {
 }
 
 .btn-filter:hover {
-  background-color: #ed1c24; /* Toyota red */
+  background-color: #ed1c24;
   color: #fff;
 }
 
 .btn-selected {
-  background-color: #ed1c24; 
+  background-color: #ed1c24;
   color: #fff;
   font-weight: bold;
 }
 
-.flex-wrap > .btn-filter {
-  flex: 1 1 auto; 
-  max-width: 45%; 
-  text-align: center;
+/* Selected Filter Styling */
+.selected-filter {
+  font-size: 0.9rem;
+  border-radius: 20px;
+}
+
+/* Close Button Styling */
+.btn-close-white {
+  filter: invert(1);
 }
 </style>

@@ -2,7 +2,6 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
-  base: '/Toyota/', // Match the repository name exactly
   plugins: [vue()],
   server: {
     proxy: {

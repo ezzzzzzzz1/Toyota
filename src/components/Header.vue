@@ -36,7 +36,6 @@
             <li class="nav-item">
               <a class="nav-link px-3 fw-medium text-dark" href="#">About Us</a>
             </li>
-            <!-- Search Icon and Get Quote Button -->
             <li class="nav-item d-flex align-items-center">
               <button class="btn btn-light btn-sm me-2">
                 <i class="bi bi-search"></i>
